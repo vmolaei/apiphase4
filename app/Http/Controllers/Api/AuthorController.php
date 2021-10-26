@@ -64,6 +64,13 @@ class AuthorController extends Controller
     }
     //profile Api --Get
     public function profile(){
+        $user_data = auth()->user();
+
+        return response()->json([
+            "status"=>true,
+            "message"=>"user data",
+            "data"=>$user_data
+        ]);
 
     }
     //log out Api --Get
