@@ -6,8 +6,10 @@ use App\Http\Controllers\Controller;
 use App\Models\Author;
 use Illuminate\Http\Request;
 
+
 class AuthorController extends Controller
 {
+
     //Register Api --Post
     public function register(Request $request){
         //validation
@@ -36,6 +38,28 @@ class AuthorController extends Controller
     }
     //login Api --Post
     public function login(Request $request){
+        //validation
+        $author_data = $request->validate([
+            "email"=>"required",
+            "password"=>"required"
+        ]);
+
+        //validate author data
+        if(!auth()->attempt($author_data)){
+            return response()->json([
+                "status"=>false,
+                "message" => "invalid credentionals"
+            ]);
+        }
+        //token
+        $token = auth()->user()->createToken("auth_token")->accessToken;
+
+        //send response
+        return response()->json([
+            "status"=>true,
+            "message"=>"author login successfully",
+            "access_token"=> $token
+        ]);
 
     }
     //profile Api --Get

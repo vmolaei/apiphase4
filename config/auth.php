@@ -43,7 +43,7 @@ return [
 
         'api' => [
             'driver' => 'passport', // set this to passport
-            'provider' => 'authors',
+            'provider' => 'users',
             'hash' => false,
         ],
     ],
@@ -68,7 +68,7 @@ return [
     'providers' => [
         'users' => [
             'driver' => 'eloquent',
-            'model' => App\Models\User::class,
+            'model' => App\Models\Author::class,
         ],
 
         // 'users' => [
