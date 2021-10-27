@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Models\Book;
 use Illuminate\Http\Request;
+use App\Models\Author;
 
 class BookController extends Controller
 {
@@ -33,8 +34,28 @@ class BookController extends Controller
 
 
     }
-    //list method --Get
+    //list all books method --Get
     public function listBooks(){
+        $books = Book::get();
+
+        return response()->json([
+           "status"=>true,
+           "message"=>"all listed books",
+           "data"=>$books
+        ]);
+
+
+    }
+    //list specific author books  method--Get
+    public function authorBooks(){
+        $author_id = auth()->user()->id;
+        $books = Author::find($author_id)->books;
+
+        return response()->json([
+            "status"=>true,
+            "message"=>"all author books",
+            "data"=>$books
+        ]);
 
 
     }
