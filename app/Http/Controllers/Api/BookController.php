@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Models\Book;
+use http\Env\Response;
 use Illuminate\Http\Request;
 use App\Models\Author;
 
@@ -76,7 +77,7 @@ class BookController extends Controller
         }else{
             return response()->json([
                "status"=>false,
-               "message"=>"book not exist"
+               "message"=>"Author book doesn't exists"
             ]);
         }
 
@@ -84,6 +85,29 @@ class BookController extends Controller
     }
     //update method --Post
     public function updateBook(Request $request,$book_id){
+        $author_id = auth()->user()->id;
+        if(Book::where([
+            "author_id"=>$author_id,
+            "id"=>$book_id
+        ])->exists()){
+            $book = Book::find($book_id);
+            $book->title = isset($request->title)?$request->title : $book->title;
+            $book->description = isset($request->description)?$request->description : $book->description;
+            $book->book_cost = isset($request->book_cost)?$request->book_cost : $book->book_cost;
+
+            $book->save();
+
+            return response()->json([
+                "status"=>true,
+                "message"=>"book data has been updated"
+            ]);
+
+        }else{
+            return response()->json([
+                "status"=>false,
+                "message"=>"Author book doesn't exists"
+            ]);
+        }
 
     }
     //delete method --Get
