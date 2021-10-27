@@ -112,6 +112,24 @@ class BookController extends Controller
     }
     //delete method --Get
     public function deleteBook($book_id){
+        $author_id = auth()->user()->id;
+        if(Book::where([
+            "author_id"=>$author_id,
+            "id"=>$book_id
+        ])->exists()) {
+            $book = Book::find($book_id);
+            $book->delete();
+            return \response()->json([
+                "status"=>true,
+                "message"=>"book has been deleted"
+            ]);
+
+        }else{
+            return response()->json([
+                "status"=>false,
+                "message"=>"Author book doesn't exists"
+            ]);
+        }
 
     }
 
