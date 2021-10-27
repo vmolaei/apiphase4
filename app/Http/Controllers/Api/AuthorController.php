@@ -73,8 +73,19 @@ class AuthorController extends Controller
         ]);
 
     }
-    //log out Api --Get
-    public function logout(){
+    //log out Api --Post
+    public function logout(Request $request){
+        //get token value
+        $token = $request->user()->token();
+
+        //revoke this token value
+        $token->revoke();
+
+        return response()->json([
+            "status"=>true,
+            "message"=>"Author deleted successfully"
+        ]);
+
 
     }
 
